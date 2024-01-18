@@ -1,0 +1,4 @@
+Obstacles that I overcame include:
+    1: How to use getline and cin.ignore
+    2: When the overstated_amt was < 90 but > 60 which caused many errors
+    3: Correct formatting

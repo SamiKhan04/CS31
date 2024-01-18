@@ -1,0 +1,75 @@
+1:
+    endl
+
+
+    grendel
+2: A RIGHT TRIANGLE Prints # with increasing amount by one in sucession with the previous number of #'s and a new line after the number of #'s + 1 is done from the previous line
+3: both loops
+#include <iostream>
+	using namespace std;
+
+	int main()
+	{
+	    int side;
+
+	    cout << "Enter a number: ";
+	    cin >> side;
+        
+        int i = 0;
+	   while (i < side)
+	    {
+		int j = i;
+        while (j >= 0)
+		{
+		    cout << "#";
+            j--;
+		}
+		cout << "\n";
+        i++;
+	    }
+	}
+
+    one loop:
+    #include <iostream>
+	using namespace std;
+
+	int main()
+	{
+	    int side;
+
+	    cout << "Enter a number: ";
+	    cin >> side;
+
+	    for (int i = 0; i < side; i++)
+	    {
+		int i = j;
+        while (j >=0)
+		{
+		    cout << "#";
+            j--;
+		}
+		cout << "\n";
+	    }
+	}
+
+4:
+switch (codesection) {
+    case 281:
+        cout << "bigamy";
+        break;
+    case 321:
+        cout << "selling illegal lottery tickets";
+        break;
+    case 322:
+        cout << "selling illegal lottery tickets";
+        break;
+    case 383:
+        cout << "selling rancid butter";
+        break;
+    case 598:
+        cout << "injuring a bird in a public cemetery";
+        break;
+    default:
+        cout << "some other crime";
+        break;
+}

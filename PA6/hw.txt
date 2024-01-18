@@ -1,0 +1,265 @@
+1: Before the ptr +=2, the array is currently {30, 20, 15}, ptr += 2 sets 
+the pointer to the second element in the array and the line ptr[0] = 10 sets the second element,
+which is 20, to 10. The second error is that in the while loop, arr has no length attribute that is
+accounted for in the loop. The third error is that the previous numbers before the recently allocated p += 2 and ptr[0] = 10
+will be in a negative indice, and will never be printed.
+
+Corrections: *ptr + 1 = 20 which means (*ptr) + 1 = 20, so 30 + 1 = 20, which cannot be done.
+To correct this, *(ptr+1) = 20 means that *(&arr[1]) = 20 so arr[1] = 20.
+ptr >= arr means that if ptr points to the first element in arr or a location before/after it this will be true.
+Secondly, the while loop decrements ptr before printing out the first element, so to fix this:
+for (ptr = arr; ptr < arr + 3; ptr++) {
+    cout << *ptr << endl;
+}, where ptr = arr sets ptr to arr[0] and ptr < arr + 3 allows for it to go through the end of the array.
+
+2: The issue is that the local variable int* pToMax is being automatically deallocated after the function ends (the activation record gets popped off the run-time stack) and is passed by value, 
+so we want to change int* pToMax to int*& pToMax, which is pToMax is a reference to a pointer so that the value can be changed.
+NOTE: int&* pToMax is DIFFERENT, this means that pToMax is a pointer to a reference, which is the same as pToMax
+void findMax(int arr[], int n, int*& pToMax) {
+    if (n <= 0) {
+        return; // no items, no maximum!
+    }
+
+    pToMax = arr; // pToMax = arr[0]
+
+    for (int i = 1; i < n; i++) {
+        if (arr[i] > *pToMax) { // arr[1] > arr[0] yes? -> pToMax = &arr[0] + i, your adding to an address not the value
+            pToMax = arr + i;
+        }
+    }
+}
+
+int main()
+            {
+                int nums[4] = { 5, 3, 15, 6 };
+                int* ptr = &nums[0];
+        
+                findMax(nums, 4, ptr);
+                cout << "The maximum is at address " << ptr << endl;
+                cout << "It's at position " << ptr - nums << endl;
+                cout << "Its value is " << *ptr << endl;
+            }
+
+3:
+void computeCube(int n, int* ncubed)
+    {
+        *ncubed = n * n * n;
+    }
+
+int main()
+    {
+        int x;
+        int* ptr = &x;
+        computeCube(5, ptr);
+        cout << "Five cubed is " << *ptr << endl;
+    }
+
+4:
+ // return true if two C strings are equal
+bool strequal(const char* str1[], const char* str2[])
+{
+    while (*str1 != '\0'  &&  *str2 != '\0')  // zero bytes at ends
+    {
+        if (*str1 != *str2)  // compare corresponding characters
+            return false;
+        str1++;            // advance to the next character
+        str2++;
+    }
+    return *str1 == *str2;   // both ended at same time?
+}
+
+int main()
+{
+    char a[15] = "Chen, G.";
+    char b[15] = "Chen, Y.";
+
+    if (strequal(a,b))
+        cout << "They're the same person!\n";
+}
+
+5: In the call to getPtrToArray(n), anArray is accessable int* p in the nochange function, but once returned, anArray is deallocated and ptr[i] leads to undefined behavior as ptr is a dangling pointer
+#include <iostream>
+using namespace std;
+
+int* nochange(int* p)
+{
+    return p;
+}
+
+int* getPtrToArray(int& m)
+{
+    int anArray[100];
+    for (int j = 0; j < 100; j++)
+        anArray[j] = 100-j;
+    m = 100;
+    return nochange(anArray);
+}
+
+void f()
+{
+    int junk[100];
+    for (int k = 0; k < 100; k++)
+        junk[k] = 123400000 + k;
+    junk[50]++;
+}
+
+int main()
+{
+    int n;
+    int* ptr = getPtrToArray(n);
+    f();
+    for (int i = 0; i < 3; i++)
+        cout << ptr[i] << ' ';
+    for (int i = n-3; i < n; i++)
+        cout << ptr[i] << ' ';
+    cout << endl;
+}
+
+6:
+    1. Declare a pointer variable named `cat` that can point to a variable of type double.
+        double* cat;
+    2. Declare `mouse` to be a 5-element array of doubles.
+        double mouse[5];
+    3. Make the `cat` variable point to the last element of `mouse`.
+        cat += 4 // Correction cat = &mouse[4]; or cat = mouse + 4;
+    4. Make the double pointed to by `cat` equal to 25, using the * operator.
+        *cat = 25;
+    5. Without using the `cat` pointer, and without using square brackets, set the fourth element 
+    (i.e., the one at position 3) of the `mouse` array to have the value 17.
+            mouse + 3 = 17; // Correction *(mouse + 3) = 17;
+    6. Move the `cat` pointer back by three doubles.
+        cat -= 2; // Correction cat -=3;
+    7. Using square brackets, but without using the name `mouse`, set the third element 
+    (i.e., the one at position 2) of the `mouse` array to have the value 42. (You may use `cat`.)
+        cat[2] = 42; // Correction cat[1] = 42;
+    8. Without using the `*` operator or the name `mouse`, but using square brackets, 
+    set the double pointed to by `cat` to have the value 54.
+        cat[0] = 54;
+    9. Using the `==` operator in the initialization expression, 
+    declare a bool variable named `d` and initialize it with an expression that 
+    evaluates to true if `cat` points to the double at the start of the `mouse` array, 
+    and to false otherwise.
+        bool d = (cat == mouse);
+    10. Using the `*` operator in the initialization expression, but no square brackets, 
+    declare a bool variable named `b` and initialize it with an expression that evaluates to 
+    true if the double pointed to by `cat` is equal to the double immediately following the double 
+    pointed to by `cat`, and to false otherwise. Do not use the name `mouse`.
+        bool* b = (*cat == *(cat + 1))
+
+7:
+double mean(const double* scores, int numScores)
+{
+    //const double* ptr = scores;
+    double tot = 0;
+    int i = 0;
+    while (i != numScores)
+    {
+        tot += (scores + i);
+        i++;
+    }
+    return tot/numScores;
+}
+
+
+7:
+// This function searches through str for the character chr.
+// If the chr is found, it returns a pointer into str where
+// the character was first found, otherwise nullptr (not found).
+
+const char* findTheChar(const char* str, char chr)
+{
+    for (int k = 0; *(str + k)!= 0; k++)
+        if (*(str + k) == chr)
+            return str+k;
+
+    return nullptr;
+}
+
+8:
+// This function searches through str for the character chr.
+// If the chr is found, it returns a pointer into str where
+// the character was first found, otherwise nullptr (not found).
+
+const char* findTheChar(const char* str, char chr)
+{
+    for (; *str != 0; str++)
+        if (*str == chr)
+            return str;
+
+    return nullptr;
+}
+
+9: 
+#include <iostream>
+using namespace std;
+
+int* maxwell(int* a, int* b)
+{
+    if (*a > *b)
+        return a;
+    else
+        return b;
+}
+
+void swap1(int* a, int* b)
+{
+    int* temp = a;
+    a = b;
+    b = temp;
+}
+
+void swap2(int* a, int* b)
+{
+    int temp = *a;
+    *a = *b;
+    *b = temp;
+}
+
+int main()
+{
+    int array[6] = { 5, 3, 4, 17, 22, 19 };
+
+    int* ptr = maxwell(array, &array[2]); // returns 5;
+    *ptr = -1; // *(ptr) = -1 -> *(&arr[0]) = -1 -> arr[0] = -1 -> int array[6] = { -1, 3, 4, 17, 22, 19 };
+    ptr += 2; // ptr points to 4
+    ptr[1] = 9; // ptr[1] is = &arr[17] int array[6] = { -1, 3, 4, 9, 22, 19}
+    *(array+1) = 79; // *(&arr[0] + 1) = 79 -> arr[1] = 79 -> int array[6] = { -1, 79, 4, 9, 22, 19 };
+
+    cout << &array[5] - ptr << endl; // address of &arr[5] - &arr[2]'s (ptr points to arr[2] remember!) address difference between them so its the value = 3 
+
+    swap1(&array[0], &array[1]); // no change since its not doing *a = *b stuffs, int array[6] = { -1, 79, 4, 9, 22, 19 };
+    swap2(array, &array[2]); // int array[6] = { 4, 79, -1, 9, 22, 19 };
+
+    for (int i = 0; i < 6; i++)
+        cout << array[i] << endl;
+}
+
+3
+4
+79
+-1
+9
+22
+19
+
+10:
+void removeS(char* source) {
+
+   char* destination = source;
+
+   for (; *source != '\0'; source++) {
+        if (*source != 'S' && *source != 's') {
+            *destination = *source;
+            destination++;
+        }
+   }
+   *destination = '\0';
+}
+
+
+int main()
+{
+    char msg[50] = "She'll blossom like a massless princess.";
+    removeS(msg);
+    cout << msg;  // prints   he'll bloom like a male prince.
+}

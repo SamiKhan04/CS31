@@ -1,0 +1,96 @@
+1) Overcame various obstacles including how to create and utilize a helper function, understanding references, and better flow control
+2) My program takes various helper functions into account when dealing with a "command-by-command" process that checks errors per command
+3) Project 3 Test Data
+You had to implement the functions with the specified signatures. In particular, you could not change the number or types of the parameters (e.g., changing int to int&).
+
+There were 54 test cases, worth 85 points in all:
+
+performCommands, error cases
+Test #	Points	Command	plotChar	mode	Return
+value	Resulting
+bad position
+1	2	HCCC	*	0 (FG)	1	1
+2	2	H-CCC	*	0 (FG)	1	2
+3	2	H123	*	0 (FG)	1	3
+4	2	F\tC	*	0 (FG)	1	1
+5	2	@CCC	*	0 (FG)	1	0
+6	2	CCCV	*	0 (FG)	1	4
+7	2	CCCV-	*	0 (FG)	1	5
+8	2	CCCB	*	0 (FG)	1	4
+18	2	H4H4H4H4	*	0 (FG)	3	6
+19	2	V10V02	*	0 (FG)	3	3
+20	2	H03H-04	*	0 (FG)	3	3
+21	2	V3V-4	*	0 (FG)	3	2
+22	1	H1	\t	1 (BG)	2	unchanged
+23	1	B\t	\t	1 (BG)	2	unchanged
+24	1	H1	*	7	2	unchanged
+25	1	HX	\t	7	2	unchanged
+Notes
+In the above cases, performCommands was called for a grid of 12 rows and 16 columns.
+
+For test 4, note that isprint('\t') is false.
+
+It was your choice whether test cases 3 and 18 through 21 plot anything. The other test cases above must not plot any nonblank characters.
+
+Test cases 22 through 25 must not change plotChar and mode.
+
+performCommands, valid cases
+Test #	Points	Command	plotChar	mode	Return
+value	Resulting
+bad position	Resulting
+plotChar	Resulting
+mode	Points plotted
+9	2	FBCBFH1	*	0 (FG)	0	unchanged	*	0 (FG)	F at (1,1), (1,2)
+10	2	H3V2	*	0 (FG)	0	unchanged	*	0 (FG)	* at (1,1), (1,2), (1,3), (1,4), (2,4), (3,4)
+11	2	H3V2CV1	*	0 (FG)	0	unchanged	*	0 (FG)	* at (1,1), (2,1)
+12	2	H3F%V2	*	0 (FG)	0	unchanged	*	0 (FG)	* at (1,1), (1,2), (1,3);
+% at (1,4), (2,4), (3,4)
+13	2	V3B%H2	*	0 (FG)	0	unchanged	*	0 (FG)	* at (1,1), (2,1), (3,1), (4,1);
+% at (4,2), (4,3)
+14	2	H3F%V2B$H1	*	0 (FG)	0	unchanged	*	0 (FG)	* at (1,1), (1,2), (1,3);
+% at (1,4), (2,4), (3,4);
+$ at (3,5)
+15	2	H3B%V2CH1	*	0 (FG)	0	unchanged	*	0 (FG)	* at (1,1), (1,2)
+16	2	H1F%	#	1 (BG)	0	unchanged	%	0 (FG)	# at (1,1), (1,2)
+17	2	H1	#	1 (BG)	0	unchanged	#	1 (BG)	# at (1,1), (1,2)
+26	1	H1	*	0 (FG)	0	unchanged	*	0 (FG)	* at (1,1), (1,2)
+27	1	F#	*	0 (FG)	0	unchanged	#	0 (FG)	none
+28	1	B$	*	0 (FG)	0	unchanged	$	1 (BG)	none
+29	1	H0	*	0 (FG)	0	unchanged	*	0 (FG)	* at (1,1)
+30	1	v02	*	0 (FG)	0	unchanged	*	0 (FG)	* at (1,1), (2,1), (3,1)
+31	1	F (blank after the F)	*	0 (FG)	0	unchanged	(blank)	0 (FG)	none
+32	1	C	#	1 (BG)	0	unchanged	*	0 (FG)	none
+33	1	H1C	*	0 (FG)	0	unchanged	*	0 (FG)	none
+Notes
+In the above cases, performCommands was called for a grid of 12 rows and 16 columns.
+
+plotLine
+Test #	Points	Row	Column	Distance	Direction	Plot char	mode	Return
+value	Points plotted
+34	1	0	1	1	1 (VERT)	#	0 (FG)	false	none
+35	1	-1	1	1	1 (VERT)	#	0 (FG)	false	none
+36	1	1	0	1	0 (HORIZ)	#	0 (FG)	false	none
+37	1	1	-1	1	1 (HORIZ)	#	0 (FG)	false	none
+38	1	15	1	-1	1 (VERT)	#	0 (FG)	true	# at (15,1), (14,1)
+39	1	16	1	-1	1 (VERT)	#	0 (FG)	false	none
+40	1	1	22	-1	0 (HORIZ)	#	0 (FG)	true	# at (1,22), (1,21)
+41	1	1	23	-1	0 (HORIZ)	#	0 (FG)	false	none
+42	1	1	1	1	2	#	0 (FG)	false	none
+43	1	1	1	1	0 (HORIZ)	\t	0 (FG)	false	none
+44	1	1	1	1	0 (HORIZ)	#	2	false	none
+45	2	10	15	2	0 (HORIZ)	#	0 (FG)	true	# at (10,15), (10,16), (10,17)
+46	2	10	15	-2	0 (HORIZ)	$	0 (FG)	true	$ at (10,15), (10,14), (10,13)
+47	2	10	15	2	1 (VERT)	#	0 (FG)	true	# at (10,15), (11,15), (12,15)
+48	2	10	15	-2	1 (VERT)	$	0 (FG)	true	$ at (10,15), (9,15), (8,15)
+49	2	10	15	0	0 (HORIZ)	#	0 (FG)	true	# at (10,15)
+50	2	10	15	0	1 (VERT)	#	0 (FG)	true	# at (10,15)
+51	2	10	15	1	1 (VERT)	A	0 (FG)	true	A at (10,15), (11,15)
+52	2	10	15	2	0 (HORIZ)	(blank)	0 (FG)	true	none (see note)
+53	2	10	15	2	0 (HORIZ)	(blank)	1 (BG)	true	none
+54	2	10	15	2	0 (HORIZ)	(blank)	1 (BG)	true	X at (10,16) (see note)
+Notes
+In the above cases, plotLine was called for a grid of 15 rows and 22 columns.
+
+For test 43, note that isprint('\t') is false.
+
+For tests 52 and 54, an X was placed at (10,16) before plotLine was called.

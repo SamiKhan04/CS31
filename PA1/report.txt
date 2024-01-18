@@ -1,0 +1,8 @@
+In step 5, by putting letters or integers larger then INT_MAX, the program produced nonsensical output.
+
+The error I introduced in logic_error.cpp is when both the jasmine and basmati rice are equivalent, it always stated that 
+"More people prefer jasmine rice over basmati rice." I fixed the error by making sure the program checks when both rice types are equivalent.
+
+The two errors I introduced in compile_error.cpp is whe the user inputs a very large number for any of the integer variables or non-integers.
+Both of these errors can be fixed with cin.fail() as this command takes the last cin value and checks if the type the value took it was 
+what it was declared to be and if the value is not larger INT_MAX.
